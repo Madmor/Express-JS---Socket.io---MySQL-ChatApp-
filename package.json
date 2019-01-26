@@ -1,0 +1,30 @@
+{
+  "name": "chatapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "madmor",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.5.0",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.13.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.3.2",
+    "express": "^4.13.0",
+    "express-session": "^1.11.3",
+    "knex": "^0.13.0",
+    "morgan": "^1.6.0",
+    "multer": "^1.1.0",
+    "mysql": "^2.7.0",
+    "passport": "^0.2.2",
+    "passport-http": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "socket.io": "^1.7.3",
+    "socket.io-handshake": "0.0.10"
+  }
+}

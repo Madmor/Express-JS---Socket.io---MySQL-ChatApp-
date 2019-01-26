@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="jquery-3.1.1.min.js"></script>
+	<style>
+		.wrap{
+			margin: 0 auto;
+			width: 500px;
+			box-sizing: border-box;
+			/* height: 500px; */
+			padding: 10px;
+			background-color: #7d7d7d;
+		}
+		video{
+			background-color: #2d2d2d;
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<video autoplay="true" id="video"></video>
+	</div>
+
+	<script>
+		// var video  = document.getElementById('video');
+		// var str;
+		// navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+ 
+		// if (navigator.getUserMedia) {       
+		//     navigator.mediaDevices.getUserMedia({video: true}).then((stream)=>{
+		//     	video.src = window.URL.createObjectURL(stream);	
+		//     	video.play()
+		// 	    str = stream;
+		// 	    console.log(str);
+		//     })
+		// }
+		 
+		// function handleVideo(stream) {
+		//     video.src = window.URL.createObjectURL(stream);
+		// }
+		// function videoError () {
+		// 	console.log('Error')
+		// }
+		// 
+		var video = document.getElementById('video');
+
+		// Get access to the camera!
+		if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+		    // Not adding `{ audio: true }` since we only want video now
+		    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function(stream) {
+		        video.src = window.URL.createObjectURL(stream);
+		        video.play();
+		        console.log(stream)
+		    }, ()=>{
+		    	console.log('Error')
+		    });
+		}
+
+		// Legacy code below: getUserMedia 
+		// else if(navigator.getUserMedia) { // Standard
+		//     navigator.getUserMedia({ video: true }, function(stream) {
+		//         video.src = stream;
+		//         video.play();
+		//     }, errBack);
+		// } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+		//     navigator.webkitGetUserMedia({ video: true }, function(stream){
+		//         video.src = window.webkitURL.createObjectURL(stream);
+		//         video.play();
+		//     }, errBack);
+		// } else if(navigator.mozGetUserMedia) { // Mozilla-prefixed
+		//     navigator.mozGetUserMedia({ video: true }, function(stream){
+		//         video.src = window.URL.createObjectURL(stream);
+		//         video.play();
+		//     }, errBack);
+		// }
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<% if(locals.mess.length > 0) {%>
+    <% if(locals.error == 'false') { %>
+        <script>swal('Berhasil !','<%=mess%>','success')</script>
+    <%}else{%>
+        <script>swal('Gagal !','<%=mess%>','error')</script>
+    <%}%>
+<% } %>

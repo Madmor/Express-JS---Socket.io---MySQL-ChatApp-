@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="/materialize/css/materialize.min.css">
+	<link rel="stylesheet" href="/materialize/icon.css">
+	<script src="/sweetalert-master/dist/sweetalert-dev.js"></script>
+	<link rel="stylesheet" href="/sweetalert-master/dist/sweetalert.css">
+	<script src="/js/socket.io-1.2.0.js"></script>
+
+	<style>
+		body{
+			overflow-x: hidden;
+		}
+		.chatProfil{
+			border-radius: 50%;
+			width: 50px;
+			height: 50px;
+			object-fit: cover;
+		}
+		.vwrap{
+        	display: flex;
+        	height: 65px;
+        	justify-content: left;
+        	padding: 0 10px;
+        	align-items: center;
+        	align-content: center;
+        	/* flex-wrap: wrap; */
+        	width: 100%;
+        }
+	</style>
+</head>
+<body class="blue-grey">
+	<%include mess.ejs%>
+	<div class="row">
+		<div id="scroll" class="col l9 s12 blue-grey darken-2" style="height:87vh;overflow:auto;overflow-x:hidden">
+			<div class="row" style="position:sticky;top:-1px;width:100%">
+				<div class="col l9 s12 blue-grey darken-1" style="margin-left:-10px;padding-left:24px;width:120%">
+					<h4 class="light white-text chatHead">Message</h4>
+				</div>
+			</div>
+			<ul id="msg"></ul>
+		</div>
+		<div class="col l3 s12 us" style="height:87vh;overflow:auto;margin-bottom:0px !important;overflow-x:hidden">
+			<div class="pink accent-2 hide-on-med-and-down" style="margin:0 -21px;padding:2px 10px">
+				<a class='dropdown-button vwrap waves-effect waves-ripple' href='#!' data-activates='dropdown1'>
+	        		<img style="height:50px;width:50px;margin-right:10px;object-fit:cover" class="responsive-img circle grey lighten-2" src="/fotoprofil/<%=user.fotoProfile%>"  onerror="this.src='/fotoprofil/noavatar.png'">
+	        		<div class="truncate white-text light"><b><%=user.username%></b><br> <span class="truncate"><%=user.deskripsi%></span></div>
+	        	</a>
+	    		<ul id='dropdown1' style="" class='dropdown-content'>
+					<li><a data-target="modal1" class="modal-trigger"><i class="material-icons">file_upload</i>Upload foto profil</a></li>
+					<li><a data-target="modal2" class="modal-trigger"><i class="material-icons">settings</i>Setting</a></li>
+					<li class="divider"></li>
+					<li><a href="/logout"><i class="material-icons">exit_to_app</i>Logout</a></li>
+				</ul>
+			</div>
+			<div class="hide-on-large-only">
+				<div class="card-panel grey lighten-5 z-depth-1">
+				    <div class="row valign-wrapper">
+				        <div class="col s2 l3 pull-l1">
+							<img src="/fotoprofil/<%= user.fotoProfile %>" style="object-fit:cover;border-radius:50%;height:70px;width:70px" onerror="this.src='/fotoprofil/noavatar.png'">
+				        </div>
+				        <div class="col s10" style="overflow:hidden">
+				            <span class="black-text">
+				            	<b><%= user.username %></b> <br>
+								<span class="light"><%= user.deskripsi %></span>
+								<br>
+								<a data-target="modal1" class="modal-trigger btn grey lighten-2 black-text" style="margin-top:10px;display:inline-flex;align-items:center;padding:5px 15px">Upload <i style="font-size:2rem" class="material-icons">file_upload</i></a>
+								<a data-target="modal2" style="margin-top:10px;display:inline-flex;align-items:center;padding:5px 15px" class="btn grey lighten-2 black-text modal-trigger"><i class="material-icons">settings</i>Setting</a>
+								<br>
+								<a href="/logout" class="btn" style="margin-top:10px">Logout</a>
+							</span>
+				        </div>
+				    </div>
+				</div>
+			</div>
+			<div class="row" style="position:sticky;top:0px;width:100%;overflow-x:hidden;z-index:1;margin:0">
+				<div class="col s12 blue-grey" style="margin-left:-10px;padding-left:24px;width:120%;">
+					<h4 class="light white-text">All user</h4>
+				</div>
+			</div>
+			<ul class="collection" id="alluser" style="z-index:0">
+				<% for(var i=0;i<alluser.length;i++) {%>
+					<%if(alluser[i].username != user.username){%>
+					<li class="collection-item avatar clickable" style="cursor:pointer !important;">
+				      <img src="/fotoprofil/<%= alluser[i].fotoProfile %>" onerror="this.src='/fotoprofil/noavatar.png'" style="object-fit:cover;object-position:left" class="circle">
+				      <span class="title"><%= alluser[i].username %></span>
+				      <p>
+				         <%= alluser[i].deskripsi %> <br>
+				         <%if(alluser[i].online == 1){%>
+				         <span class="light blue white-text" style="padding:0 10px">online</span>
+				         <%}else{%>
+				         <span class="light red white-text" style="padding:0 10px">offline</span>
+				         <%}%>
+				      </p>
+				      	<!-- <a href="#!" class="online<%= alluser[i].username %>"><i class="material-icons right red-text">fiber_manual_record</i></a> <br> -->
+					    <a href="#!" class="left-align secondary-content <%= alluser[i].username %>"></a>  
+				    </li>
+				    <%}%>
+				<%}%>
+			</ul>
+		</div>
+	</div>
+	<div class="row" style="margin-top:67px;">
+		<div class="blue-grey col s12 z-depth-5" style="z-index:2;bottom:0;position:fixed;padding:10px 0">
+			<div class="col s10">
+				<input id="text" type="text" class="white-text" placeholder="type your message!">
+			</div>
+			<div class="col s2" style="height:100% !important;display:flex;align-items:flex-end;justify-content:center">
+				<button style="bottom:0 !important" class="btn msgSend waves-effect waves-light right" type="submit" name="action">Send
+					<i class="material-icons right">send</i>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="/js/jquery-3.1.1.min.js"></script>
+	<script src="/materialize/js/materialize.min.js"></script>
+	<script>
+		var socket = io(),
+			pilih = false,
+			user = '<%= user.username %>',
+			idUser = <%= user.id %>,
+			terpilih = '';
+			console.log(socket.length)
+		var alluser = <%- users %>,
+			unread = <%- read %>;
+
+		// console.log(unread);
+	</script>
+	<script src="/js/mysocket.js"></script>
+
+	<div id="modal1" class="modal bottom-sheet black-text left-align"><!-- bottom-sheet -->
+	    <div class="modal-content">
+	        <h4>Upload foto profilmu</h4>
+	        <form action="/upload" enctype="multipart/form-data" method="post">
+				<div class="file-field input-field">
+			      <div class="btn">
+			        <span>File</span>
+			        <input type="file" required accept="image/*" name="avatar">
+			      </div>
+			      <div class="file-path-wrapper">
+			        <input class="file-path validate" type="text">
+			      </div>
+			    </div>
+				<div class="row rev">
+		    		<button class="btn teal waves-effect waves-light right" type="submit" name="action">submit
+						<i class="material-icons right">send</i>
+					</button>
+	    		</div>
+			</form>
+	    </div>
+	    <div class="modal-footer">
+	        <a href="#!" class="modal-action modal-close waves-effect waves-green btn">Cancel</a>
+	    </div>
+	</div>
+	<div id="modal2" class="modal modal-fixed-footer black-text left-align"><!-- bottom-sheet -->
+	    <div class="modal-content">
+	        <h4>Profile</h4><br>
+	        <form action="/update" method="post">
+				<div class="input-field">
+			    	<input id="username" value="<%=user.username%>" name="username" type="text" required class="validate">
+					<label for="username" class="truncate">Username</label>
+			    </div>
+			    <div class="input-field">
+	    			<textarea class="materialize-textarea" name="deskripsi" id="comment" cols="30" rows="10"><%=user.deskripsi%></textarea>
+    				<label for="comment">Deskripsi diri? e.g hobi, pekerjaan, etc</label>
+    			</div>
+	    		<div class="row rev">
+		    		<button class="btn teal waves-effect waves-light left" type="submit" name="action">Update
+						<i class="material-icons right">send</i>
+					</button>
+	    		</div>
+			</form>
+	    </div>
+	    <div class="modal-footer">
+	        <a href="#!" class="modal-action modal-close waves-effect waves-green btn">Cancel</a>
+	    </div>
+	</div>
+</body>
+</html>

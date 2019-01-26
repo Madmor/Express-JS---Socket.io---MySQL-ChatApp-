@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="/materialize/css/materialize.min.css">
+	<link rel="stylesheet" href="/materialize/icon.css">
+	<script src="/sweetalert-master/dist/sweetalert-dev.js"></script>
+	<link rel="stylesheet" href="/sweetalert-master/dist/sweetalert.css">
+
+	<style>
+		body{
+			background-image: url('/picture/pexels-photo-300333.jpeg');
+			background-size: 100%;
+			background-attachment: fixed;
+			background-position: center;
+		}
+		i.material-icons{
+			color: #fff !important;
+		}
+		@media only screen and (max-width: 900px) {
+			body{
+				background-size:200%;
+			}
+			h3{
+				font-size: 6vw;
+			}
+		}
+	</style>
+</head>
+<body>
+	<%include mess.ejs%>
+	<div class="row" style="height:20vh;display:flex;align-items:flex-end;align-content:flex-end;">
+		<div class="col s10 offset-s1 white-text">
+			<h3>Welcome to our chat app !</h3>
+		</div>
+	</div>
+	<div class="wrap" style="display:flex;align-items:center;justify-content:center">
+		
+		<div class="row" style="width:100% !important;">
+			<div class="col l4 s12 pull-l1 right" style="margin-bottom:10px">
+				<div class="col s12 white-text" style="background-color:rgba(96,125,139,0.8)">
+					<h1 class="flow-text">Masuk</h1>
+					<form class="col s12" action="/login" method="post">
+						<div class="row">
+					        <div class="col s12 input-field">
+								<input id="username" name="username" type="text" required class="validate">
+								<label for="username" class="truncate">Username</label>
+								<!-- <a href=""><i class="material-icons">close</i></a> -->
+					        </div>	
+					        <div class="col s12 input-field">
+								<input id="password" name="password" type="password" required class="validate">
+								<label for="password" class="truncate">Password</label>
+								<!-- <a href=""><i class="material-icons">close</i></a> -->
+					        </div>
+			    		</div>
+			    		<div class="row rev">
+				    		<button class="btn amber waves-effect waves-light right" type="submit" name="action">Login
+								<i class="material-icons right">send</i>
+							</button>
+			    		</div>
+					</form>
+				</div>
+			</div>
+			<div class="col l6 s12 offset-l1 left">
+				<div class="col s12" style="background-color:rgba(255,255,255,0.2)">
+					
+				<h1 class="flow-text white-text">Daftar</h1>
+					<form class="col s12 white-text" action="/register" method="post">
+						<div class="row">
+					        <div class="col s6 input-field">
+								<i class="material-icons prefix white-text">account_circle</i>
+								<input id="username" name="username" type="text" required class="validate">
+								<label for="username" class="truncate">Username</label>
+					        </div>	
+					        <div class="col s6 input-field">
+								<input id="password" name="password" required type="password" class="validate">
+								<label for="password" class="truncate">Password</label>
+					        </div>
+			    		</div>
+			    		<div class="row">
+					        <div class="col s12 input-field">
+						        <i class="material-icons prefix white-text">email</i>
+								<input id="email" name="email" type="email" required class="validate">
+								<label for="email" class="truncate">Email</label>
+					        </div>
+			    		</div>
+			    		<div class="row">
+			    			<div class="input-field col s12">
+				    			<i class="material-icons prefix">insert_comment</i>
+			    				<textarea class="materialize-textarea" name="deskripsi" id="comment" cols="30" rows="10"></textarea>
+			    				<label for="comment">Deskripsi diri? e.g hobi, pekerjaan, etc</label>
+			    			</div>
+			    		</div>
+			    		<div class="row rev">
+				    		<button class="btn amber waves-effect waves-light right" type="submit" name="action">Register
+								<i class="material-icons right">send</i>
+							</button>
+			    		</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- <footer class="page-footer blue-grey">
+	    <div class="container">
+	        <div class="row">
+	            <div class="col l6 s12">
+	                <h5 class="white-text">Mad developer</h5>
+	                <p class="grey-text text-lighten-4">Build your crazy idea with us.</p>
+	                <div id="shareInPopup" class="round"></div>
+	            </div>
+	            <div class="col l4 offset-l2 s12">
+	                <h5 class="white-text">Links</h5>
+	                <ul>
+	                    <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+	                    <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+	                    <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+	                    <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+	                </ul>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="footer-copyright blue-grey darken-2">
+	        <div class="container">
+	            © 2017, All right reserved to <b>Mad Developer</b>
+	            <a class="grey-text text-lighten-4 right" href="#!">MadDev.com</a>
+	        </div>
+	    </div>
+	</footer> -->
+	<script src="/js/jquery-3.1.1.min.js"></script>
+	<script src="/materialize/js/materialize.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="/js/jquery-3.1.1.min.js"></script>
+	<script src="/js/socket.io-1.2.0.js"></script>
+	<style>
+		.wrap{
+			margin: 0 auto;
+			width: 500px;
+			box-sizing: border-box;
+			/* height: 500px; */
+			padding: 10px;
+			background-color: #7d7d7d;
+		}
+		video{
+			background-color: #2d2d2d;
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<video id="video">
+			<!-- <source src="/vids/Aviani.mp4"> -->
+		</video>
+	</div>
+	<canvas style="display:none" id="canvas"></canvas>
+	<img id="img">
+	
+	<div class="stream" style="width:100%"></div>
+	
+	<button class="x">Aktifkan kamera</button>
+	<button class="y">Matikan kamera</button>
+	
+	<script>
+		var socket = io(),
+			canvas = document.getElementById('canvas')
+			context = canvas.getContext('2d');
+		var video  = document.getElementById('video');
+
+		canvas.height=350;
+		canvas.width=500;
+		context.width = canvas.width;
+		context.height = canvas.height;
+		
+		view = (video,context)=>{
+			context.drawImage(video,0,0,context.width,context.height);
+		}
+		
+		var str,interval;
+		$(document).ready(function() {
+			// stream webcam
+			$('.x').click(function(event) {
+				// alert('message?: DOMString')
+				navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+		 
+				if (navigator.getUserMedia) {       
+				    navigator.mediaDevices.getUserMedia({video: true}).then((stream)=>{
+				    	var vid = stream;
+				    	video.src = window.URL.createObjectURL(vid);	
+				    	video.play()
+					    str = stream;
+					    // console.log(str);
+					    console.log(canvas);
+						socket.emit('streamingni',{stream:canvas.toDataURL('image/webp')});
+					    interval = setInterval(()=>{
+							view(video,context)
+							socket.emit('streamingni',{stream:canvas.toDataURL('image/webp')});
+						},300)
+				    })
+				}
+			});
+			$('.y').click(function(event) {
+				video.pause();
+				video.src = "";
+				str.getTracks()[0].stop();
+				clearInterval(interval);
+				socket.emit('streamingstop');
+			});
+
+			// stream video
+			// $('.x').click(function(event) {
+			// 	video.play();
+			// 	setInterval(()=>{
+			// 		view(video,context)
+			// 		socket.emit('streamingni',{stream:canvas.toDataURL('image/webp')});
+			// 	},100)
+			// });
+			
+
+			socket.on('loadstreaming',(src)=>{
+				var img = document.getElementById('img')
+				img.src = src.stream;
+				$('.stream').html(src.stream);
+				// console.log(src.stream)
+			})
+			socket.on('berhenti',(msg)=>{
+				var img = document.getElementById('img')
+				img.src = "";
+				$('.stream').html(msg.msg);
+				alert(msg.msg)
+			})
+		});
+	</script>
+</body>
+</html>
